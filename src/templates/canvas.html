@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Canvas{% endblock %}
+
+{% block content %}
+<div class="ui two column centered grid">
+    <div class="row">
+        <div class="column">
+            <canvas id="canvas" width="700" height="500"></canvas>
+        </div>
+    </div>
+    <div class="row">
+        <button id="save" class="ui button">Сохранить</button>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+    {{ super() }}
+<script src="static/js/paint_canvas.js"></script>
+{% endblock %}
