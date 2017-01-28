@@ -1,5 +1,6 @@
 var palette = $('#palette');
-var canvas = $("#canvas")[0];
+var canvas_elt = $('#canvas')
+var canvas = canvas_elt[0];
 var context = canvas.getContext("2d");
 
 var currentPoint={x:0, y:0}, previousPoint={x:0, y:0}
@@ -45,13 +46,29 @@ canvas.onmousemove=function(){
         draw();
 }
 
+function handle_save(data, textStatus, jqXHR){
+    canvas_elt.attr('image_id', data['id'])
+    $('#save-modal .content').text(window.location.origin + '/gallery/' + data['id'])
+    $('#save-modal').modal('show');
+}
+
 function save(){
     image = canvas.toDataURL('image/png');
-    $.post(
-        'gallery/',
-        {image: image},
-        function(data, textStatus, jqXHR){
-            alert(window.location.origin + '/gallery/' + data['id'])
-        }
-    )
+    if (!!canvas_elt.attr('image_id')){
+        $.ajax({
+        url: 'image/' + canvas_elt.attr('image_id'),
+        type: 'PUT',
+        data: {image: image},
+        success: handle_save,
+        dataType: 'json'
+        })
+    }
+    else {
+        $.post(
+            'image/',
+            {image: image},
+            handle_save
+        )
+    }
+
 }

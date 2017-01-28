@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Gallery{% endblock %}
+
+{% block content %}
+<div class="ui two column centered grid">
+    <div class="row">
+        {% for item in items %}
+            <div class="column">
+                <a href="{{ item.id }}"><img src="{{ item.image }}"></a>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

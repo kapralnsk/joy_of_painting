@@ -33,14 +33,14 @@ class BaseDAO(object):
     def __init__(self, collection):
         self.collection = collection
 
-    async def create(self, **kwargs):
-        record = await self.collection.insert(kwargs)
+    async def create(self, data):
+        record = await self.collection.insert(data)
         return str(record)
 
-    async def update(self, object_id, **kwargs):
-        record = await self.collection(
+    async def update(self, object_id, data):
+        record = await self.collection.update(
             {'_id': ObjectId(object_id)},
-            kwargs
+            data
         )
         return str(record)
 
@@ -53,7 +53,7 @@ class BaseDAO(object):
         return self._replace_object_id(record)
 
     async def list(self):
-        items = await self.collection.find()
+        items = await self.collection.find().to_list(length=None)
         return list(map(lambda record: self._replace_object_id(record), items))
 
     @staticmethod

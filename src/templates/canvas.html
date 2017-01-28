@@ -2,6 +2,8 @@
 {% block title %}Canvas{% endblock %}
 
 {% block content %}
+<!--TODO add pallete-->
+<!--TODO add few brush sizes-->
 <div class="ui two column centered grid">
     <div class="row">
         <div class="column">
@@ -9,9 +11,18 @@
         </div>
     </div>
     <div class="row">
-        <button id="save" class="ui button">Сохранить</button>
+        <button id="save" class="ui positive button">Сохранить</button>
     </div>
 </div>
+<div class="ui small test modal scrolling transition hidden" id="save-modal">
+    <div class="header">Good job!</div>
+    <div class="content"></div>
+    <div class="actions">
+      <div class="ui positive button">
+        Close
+      </div>
+    </div>
+  </div>
 {% endblock %}
 {% block scripts %}
     {{ super() }}
