@@ -6,7 +6,6 @@ services:
      - "27017:27017"
  app:
    image: kapral/joy_of_painting
-   command: python src/server.py
    environment:
      - DB_NAME=joy_of_painting
      - DB_HOST=db
