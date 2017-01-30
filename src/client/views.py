@@ -7,16 +7,26 @@ from base import BaseView
 class CanvasView(View):
     @template('canvas.html')
     async def get(self):
-        return
+        brushes = [
+            {'name': 'Small brush', 'size': 2},
+            {'name': 'Medium brush', 'size': 5},
+            {'name': 'Big brush', 'size': 8},
+        ]
+        return {'brushes': brushes}
 
 
 class ImageAPIView(BaseView):
     collection_name = 'images'
+    required_params = {
+        'get': ['image_id'],
+        'post': ['image'],
+        'put': ['image_id', 'image'],
+        'delete': ['image_id']
+    }
 
-    @template('image.html')
     async def get(self):
         record = await self.dao.retrieve(self.request.match_info['image_id'])
-        return {'image': record['image']}
+        return json_response({'image': record['image']})
 
     async def post(self):
         data = await self.request.post()
@@ -39,6 +49,9 @@ class ImageAPIView(BaseView):
 
 class GalleryView(BaseView):
     collection_name = 'images'
+    required_params = {
+        'get': None
+    }
 
     async def detail(self):
         return await self.dao.retrieve(self.request.match_info['image_id'])
