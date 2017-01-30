@@ -1,19 +1,10 @@
-import inspect
-from aiohttp.web import View, json_response
+from aiohttp.web import View, HTTPBadRequest
 from bson import ObjectId
-
-
-def request_handler_wrapper(func):
-    async def wrapped(*args, **kwargs):
-        try:
-            return await func(*args, **kwargs)
-        except Exception as e:
-            return json_response({'error_message': str(e)}, status=500)
-    return wrapped
 
 
 class BaseView(View):
     collection_name = None
+    required_params = None
 
     def __init__(self, request, dao=None):
         super().__init__(request)
@@ -23,10 +14,27 @@ class BaseView(View):
         elif not dao and self.collection_name:
             self.dao = BaseDAO(db[self.collection_name])
 
-        # wrap methods in request_handler_wrapper
-        for name, m in inspect.getmembers(self, inspect.ismethod):
-            if name in ['get', 'post', 'put', 'delete']:
-                setattr(self, name, request_handler_wrapper(m))
+        # add request validator to handler
+        self.method_name = self.request.method.lower()
+        request_handler = getattr(self, self.method_name)
+        setattr(self, self.method_name, self.request_validator(request_handler))
+
+
+    def request_validator(self, func):
+        async def wrapped(*args, **kwargs):
+            if self.method_name != 'get':
+                await self.request.post()
+                data = self.request.POST
+            else:
+                data = self.request.GET
+            params = self.required_params[self.method_name]
+            if params:
+                for param in params:
+                    if not data.get(param) and not self.request.match_info.get(param):
+                        raise HTTPBadRequest(text=f'Missing required parameter {param}')
+            return await func(*args, **kwargs)
+
+        return wrapped
 
 
 class BaseDAO(object):
