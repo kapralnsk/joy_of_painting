@@ -1,3 +1,4 @@
-canvas {
+.border {
     border:solid 1px #aaa;
+    border-radius: 25px;
 }

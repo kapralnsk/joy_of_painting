@@ -1,22 +1,40 @@
 {% extends "base.html" %}
 {% block title %}Canvas{% endblock %}
 
-{% block content %}
-<!--TODO add pallete-->
-<!--TODO add few brush sizes-->
-<div class="ui two column centered grid">
-    <div class="row">
-        <div class="column">
-            <canvas id="canvas" width="700" height="500"></canvas>
+{% block header %}
+    {{ super() }}
+    <a class="item" href="gallery/"><i class="image icon"></i>Gallery</a>
+    <div class="item"><i class="eyedropper icon"></i><input id="palette"></div>
+    <div class="item">
+        <div class="ui selection dropdown" id="brush">
+          <input type="hidden" name="brush" value="8">
+            <i class="paint brush icon"></i>
+            <i class="dropdown icon"></i>
+          <div class="default text">Select brush</div>
+          <div class="menu">
+              {% for brush in brushes %}
+              <div class="item" data-value="{{ brush.size }}">{{ brush.name }}</div>
+              {% endfor %}
+          </div>
         </div>
+     </div>
+{% endblock %}
+
+{% block content %}
+<div class="ui three column centered grid">
+    <div class="row">
+        <canvas id="canvas" class="border" width="1000" height="700" style="cursor: crosshair;"></canvas>
     </div>
     <div class="row">
-        <button id="save" class="ui positive button">Сохранить</button>
+        <button id="save" class="ui primary button"><i class="save icon"></i>Save</button>
+        <button id="clear" class="ui button"><i class="erase icon"></i> Clear</button>
     </div>
 </div>
 <div class="ui small test modal scrolling transition hidden" id="save-modal">
     <div class="header">Good job!</div>
-    <div class="content"></div>
+    <div class="content">
+        <a href="" id="image_link"></a>
+    </div>
     <div class="actions">
       <div class="ui positive button">
         Close
@@ -26,5 +44,8 @@
 {% endblock %}
 {% block scripts %}
     {{ super() }}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.8.0/spectrum.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.8.0/spectrum.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.16/clipboard.min.js"></script>
 <script src="static/js/paint_canvas.js"></script>
 {% endblock %}

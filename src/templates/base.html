@@ -3,14 +3,21 @@
 <head>
     {% block head %}
     <link rel="icon" href="static/favicon.ico">
-    <link rel="stylesheet" href="static/css/style.css">
+    <link rel="stylesheet" href="/static/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.2/semantic.min.css">
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %} - The Joy of Painting</title>
     {% endblock %}
 </head>
 <body>
-    <div id="content">{% block content %}{% endblock %}</div>
+    <div class="ui menu">
+        <div class="ui container">
+            <a href="/" class="item"><img src="/static/main.jpg"></a>
+            {% block header %}
+            {% endblock %}
+        </div>
+    </div>
+    <div class="ui container">{% block content %}{% endblock %}</div>
 </body>
 {% block scripts %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
