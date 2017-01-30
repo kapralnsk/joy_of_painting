@@ -5,10 +5,8 @@ services:
    ports:
      - "27017:27017"
  app:
-   build: .
+   image: kapral/joy_of_painting
    command: python src/server.py
-   volumes:
-     - .:/project
    environment:
      - DB_NAME=joy_of_painting
      - DB_HOST=db
