@@ -4,18 +4,14 @@
 {% block header %}
     {{ super() }}
     <a class="item" href="/gallery/"><i class="image icon"></i>Gallery</a>
+    <div class="item"><button id="delete" class="ui button negative"><i class="trash icon"></i> Delete</button></div>
+    <a href="/{{ id }}" class="item"><button id="edit" class="ui button"><i class="edit icon"></i> Edit</button></a>
 {% endblock %}
 
 {% block content %}
-<div class="ui two column centered grid">
-    <div class="row">
-        <div class="column">
-            <img class="border" src="{{ image }}" alt="">
-        </div>
-    </div>
-    <div class="row">
-        <button id="delete" class="ui button negative"><i class="trash icon"></i> Delete</button>
-        <a href="/{{ id }}"><button id="edit" class="ui button"><i class="edit icon"></i> Edit</button></a>
+<div class="ui column centered grid">
+    <div class="column">
+        <img class="border" src="{{ image }}" alt="">
     </div>
 </div>
 <div class="ui small test modal scrolling transition hidden" id="delete-modal">
